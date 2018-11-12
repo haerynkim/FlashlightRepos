@@ -1,19 +1,18 @@
 /*
-  ButtonBlink
+  WorkingBPM
 
-  This code is capable of turning on and off a function that dims an LED every second. 
-  This function is turned on when the switch is on, and turned off when the switch is off.
+  This code is capable of processing BPM values from a pulse sensor and displaying the values on
+  a LCD screen display.
 
-  modified 19 May 2018
+  modified 11 Nov 2018
   by Haeryn Kim
-
-  This code is part of a project available in the public domain.
   
   http://github.com/haerynkim/FlashlightRepos
 */
 #define USE_ARDUINO_INTERRUPTS true
 #include <PulseSensorPlayground.h>
 #include <Wire.h>
+#include <SeeedOLED.h>
 
 // Define constants:
 const int interruptPin = 2;
@@ -40,15 +39,24 @@ void setup() {
      of readSensor() calls, which would make the pulse measurement
      not work properly.
   */
+  Wire.begin();
+  SeeedOled.init(); //initialize SeeedOLED display
+  SeeedOled.clearDisplay(); //clear the screen and set start position to top left corner
+  SeeedOled.setNormalDisplay(); //Set display to normal mode (i.e non-inverse mode)
+  SeeedOled.setPageMode(); //Set addressing mode to Page Mode
+  SeeedOled.setTextXY(0,0); //Set the cursor to Xth Page, Yth Column  
+  SeeedOled.putString("Hello BME590!"); //Print the String
+
   Serial.begin(9600);
-  pulseSensor.begin();
-  // initialize interruptPin (pin 2) as an input.
-  pinMode(interruptPin, INPUT);
-  attachInterrupt(digitalPinToInterrupt(interruptPin), changestate, FALLING);
-  // initialize digital pin 3 as an output.
-  pinMode(ledPin, OUTPUT);
-  pulseSensor.analogInput(PULSE_INPUT);
+  pulseSensor.begin(); //initialize pulse sensor
+  pulseSensor.analogInput(PULSE_INPUT); //initialize pin A0 as analog input pin for pulse sensor
   pulseSensor.setSerial(Serial);
+  
+  pinMode(interruptPin, INPUT); //initialize pin 2 as interrupt pin for pushbutton
+  attachInterrupt(digitalPinToInterrupt(interruptPin), changestate, FALLING);
+  
+  pinMode(ledPin, OUTPUT); //initialize digital pin 3 as an output for LED.
+  
 }
 
 int maxBPM = 0;
@@ -63,6 +71,7 @@ void loop() {
   switch (buttonPushCounter % 6) {
     case 0:
       digitalWrite(ledPin, 0);
+      SeeedOled.clearDisplay();
       break;
     case 1:
       analogWrite(ledPin, int(PWM_max/4));
@@ -81,11 +90,16 @@ void loop() {
       break;
     case 5:
       delay(20);
+      pulseSensor.fadeOnPulse(ledPin);
       if (pulseSensor.sawStartOfBeat()) {
-        Serial.print("BPM: ");
-        Serial.println(BPM);
-        Serial.print("Max BPM: ");
-        Serial.println(maxBPM);
+        SeeedOled.setTextXY(0,0);
+        SeeedOled.putString("BPM:");
+        SeeedOled.setTextXY(0,5);
+        SeeedOled.putNumber(BPM);
+        SeeedOled.setTextXY(1,0);
+        SeeedOled.putString("Max BPM:");
+        SeeedOled.setTextXY(1,9);
+        SeeedOled.putNumber(maxBPM);
       break;
       }
   lastButtonState = buttonState;
