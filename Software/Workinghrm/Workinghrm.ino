@@ -14,7 +14,6 @@
 #define USE_ARDUINO_INTERRUPTS true
 #include <PulseSensorPlayground.h>
 #include <Wire.h>
-include <SeeedOLED.h>
 
 // Define constants:
 const int interruptPin = 2;
@@ -42,8 +41,7 @@ void setup() {
      of readSensor() calls, which would make the pulse measurement
      not work properly.
   */
-  Serial.begin(115200);
-  Wire.begin();
+  Serial.begin(9600);
   pulseSensor.begin();
   // initialize interruptPin (pin 2) as an input.
   pinMode(interruptPin, INPUT);
@@ -53,23 +51,24 @@ void setup() {
   pulseSensor.analogInput(PULSE_INPUT);
   pulseSensor.setSerial(Serial);
   pulseSensor.setThreshold(THRES);
-  SeedOled.init(); //initialize SEEED OLED display
 
-  SeeedOled.clearDisplay();           //clear the screen and set start position to top left corner
-  SeeedOled.setNormalDisplay();       //Set display to Normal mode
-  SeeedOled.setPageMode();            //Set addressing mode to Page Mode
-  SeeedOled.setTextXY(0,0);           //Set the cursor to 0th Page, 0th Column  
-  SeeedOled.putString("Hello World!");           //Print the String
-  SeeedOled.setTextXY(1,0);           //Set the cursor to 1st Page, 0th Column  
-  SeeedOled.putNumber(0xFFFF);        //Print number
-  SeeedOled.setTextXY(2,0);           //Set the cursor to 2nd Page, 0th Column  
-  SeeedOled.putNumber(0xFFFFFFFF);    //Print number
-  SeeedOled.setTextXY(3,0);           //Set the cursor to 3rd Page, 0th Column  
-  SeeedOled.putNumber(-12345);        //Print number
 }
+
+int i = 0;
+int sum = 0;
 
 // the loop function runs over and over again forever
 void loop() {
+  int BPM = pulseSensor.getBeatsPerMinute();
+  for (i=0;i<20;i++){
+    if (pulseSensor.sawStartOfBeat()) {
+      int peak = pulseSensor.getLatestSample();
+      Serial.println(peak);
+      sum = sum + peak;
+    }
+    break;
+  }
+  
   switch (5) {
     case 0:
       digitalWrite(ledPin, 0);
@@ -91,8 +90,9 @@ void loop() {
       break;
     case 5:
       delay(20);
-      int BPM = pulseSensor.getBeatsPerMinute();
-      Serial.println(BPM);
+      //if (pulseSensor.sawStartOfBeat()) {
+        //Serial.print("BPM: ");
+        //Serial.println(BPM);
       break;
   }
   lastButtonState = buttonState;
