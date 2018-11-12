@@ -1,5 +1,5 @@
 /*
-ButtonBlink
+  ButtonBlink
 
   This code is capable of turning on and off a function that dims an LED every second. 
   This function is turned on when the switch is on, and turned off when the switch is off.
@@ -13,6 +13,8 @@ ButtonBlink
 */
 #define USE_ARDUINO_INTERRUPTS true
 #include <PulseSensorPlayground.h>
+#include <Wire.h>
+include <SeeedOLED.h>
 
 // Define constants:
 const int interruptPin = 2;
@@ -41,6 +43,7 @@ void setup() {
      not work properly.
   */
   Serial.begin(115200);
+  Wire.begin();
   pulseSensor.begin();
   // initialize interruptPin (pin 2) as an input.
   pinMode(interruptPin, INPUT);
@@ -50,12 +53,20 @@ void setup() {
   pulseSensor.analogInput(PULSE_INPUT);
   pulseSensor.setSerial(Serial);
   pulseSensor.setThreshold(THRES);
+  SeedOled.init(); //initialize SEEED OLED display
+
+  SeeedOled.clearDisplay();           //clear the screen and set start position to top left corner
+  SeeedOled.setNormalDisplay();       //Set display to Normal mode
+  SeeedOled.setPageMode();            //Set addressing mode to Page Mode
+  SeeedOled.setTextXY(0,0);           //Set the cursor to 0th Page, 0th Column  
+  SeeedOled.putString("Hello World!");           //Print the String
+  SeeedOled.setTextXY(1,0);           //Set the cursor to 1st Page, 0th Column  
+  SeeedOled.putNumber(0xFFFF);        //Print number
+  SeeedOled.setTextXY(2,0);           //Set the cursor to 2nd Page, 0th Column  
+  SeeedOled.putNumber(0xFFFFFFFF);    //Print number
+  SeeedOled.setTextXY(3,0);           //Set the cursor to 3rd Page, 0th Column  
+  SeeedOled.putNumber(-12345);        //Print number
 }
-
-
-const int sample = 200;
-unsigned maxVal = 0;
-int i;
 
 // the loop function runs over and over again forever
 void loop() {
