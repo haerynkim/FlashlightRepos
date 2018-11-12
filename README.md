@@ -1,3 +1,4 @@
+## FlashlightRepos
 This repository will contain the necessary components to make the flashlight project viable. The repository also includes a project board that visualizes the tasks to be completed from time to time.
 #
 About the flashlight project:
