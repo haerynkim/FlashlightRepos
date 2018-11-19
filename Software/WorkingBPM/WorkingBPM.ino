@@ -108,8 +108,8 @@ void setup() {
   SeeedOled.init(); //initialize SeeedOLED display
   SeeedOled.clearDisplay(); //clear the screen and set start position to top left corner
   SeeedOled.drawBitmap((unsigned char*) myLogo,1024);   // 1024 = 128 Pixels * 64 Pixels / 8
-  delay(1000);
-
+  delay(3000);
+  SeeedOled.clearDisplay();
   SeeedOled.setNormalDisplay(); //Set display to normal mode (i.e non-inverse mode)
   SeeedOled.setPageMode(); //Set addressing mode to Page Mode
   //SeeedOled.setTextXY(0,0); //Set the cursor to Xth Page, Yth Column  
@@ -129,17 +129,26 @@ void setup() {
 
 int maxBPM = 0;
 int BPM = 0;
+unsigned long previousMillis = 0;
+
+const long interval = 30000;
 
 // the loop function runs over and over again forever
 void loop() {
+  unsigned long currentMillis = millis();
   int BPM = pulseSensor.getBeatsPerMinute();
   if (BPM>maxBPM){
     maxBPM = BPM;
   }
-  switch (buttonPushCounter % 6) {
+  if ((maxBPM>200)&&(currentMillis - previousMillis>=interval)) {
+    maxBPM = 0;
+    previousMillis = currentMillis;
+  }
+  
+  switch (buttonPushCounter) {
     case 0:
-      digitalWrite(ledPin, 0);
       SeeedOled.clearDisplay();
+      digitalWrite(ledPin, 0);
       break;
     case 1:
       analogWrite(ledPin, int(PWM_max/4));
@@ -158,19 +167,16 @@ void loop() {
       break;
     case 5:
       delay(20);
-      pulseSensor.fadeOnPulse(ledPin);
-      if (pulseSensor.sawStartOfBeat()) {
-        SeeedOled.setTextXY(0,0);
-        SeeedOled.putString("BPM:");
-        SeeedOled.setTextXY(0,5);
-        SeeedOled.putNumber(BPM);SeeedOled.putString(" ");
-        SeeedOled.setTextXY(1,0);
-        SeeedOled.putString("Max BPM:");
-        SeeedOled.setTextXY(1,9);
-        SeeedOled.putNumber(maxBPM);
+      SeeedOled.setTextXY(0,0);
+      SeeedOled.putString("BPM:");
+      SeeedOled.setTextXY(0,5);
+      SeeedOled.putNumber(BPM);SeeedOled.putString("  ");
+      SeeedOled.setTextXY(1,0);
+      SeeedOled.putString("Max BPM:");
+      SeeedOled.setTextXY(1,9);
+      SeeedOled.putNumber(maxBPM);SeeedOled.putString("  ");
+      //}
       break;
-      }
-  lastButtonState = buttonState;
   }
 }
 
@@ -178,4 +184,6 @@ void loop() {
 void changestate() {
   buttonState = !buttonState;
   buttonPushCounter ++;
+  buttonPushCounter = buttonPushCounter % 6;
+  Serial.println(buttonPushCounter);
 }
