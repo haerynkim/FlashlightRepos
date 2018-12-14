@@ -1,8 +1,25 @@
-## FlashlightRepos
-This repository will contain the necessary components to make the flashlight project viable. The repository also includes a project board that visualizes the tasks to be completed from time to time.
-#
-About the flashlight project:
-The flashlight will contain certain features such as: variable light intensity, hard case, etc.
+# FlashlightRepos
+
+## Features of the Device
+
+### Software
+* Debounce, interrupt on pushbutton
+* Max BPM resets if max BPM remains over 215 bpm for greater than 20 seconds
+
+### Hardware
+* Green 3mm LED on PCB to indicate connection to power source and battery life (with diminishing brightness)
+* 5.5 x 4.0 (cm) double-sided PCB with ground plane
+
+### Mechanical
+* Easy mount, easy install
+* Tight latch and hinge design
+* (-) LED without lightpipe
+
+### Extra
+* Pulse sensor: measures pulse at 9600 bauds rate. Can be attached to earlobe or finger.
+* LED display: "Haeryn's Light Box: Thank You Matt Brown!" logo and continous display of current BPM and max BPM
+* Indicates maximum BPM measured since device turned ON.
+
 #
 Functional Specifications:
 LED light that is button-activated to switch between the following operating modes:
@@ -39,7 +56,3 @@ Design history / notes
 Specification sheets
 Usage notes (README.md)
 Kanban board / Issues / Milestones
-#
-Notes from class lecture on Ganban boards
-Software - microcontroller
-Testing Data - offers safety net in case device breaks down
