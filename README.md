@@ -28,6 +28,8 @@ To replace the battery, simply open the box and unscrew the 1/8" bolts and expos
 
 ### Extra specifications
 
+| Spec | Measured |
+|-----------------|--------|
 | Size(cm)        | 6x7x5  |
 | Weight(g)       | 127.6g |
 | Power draw(mA)  | 65-70  |
