@@ -1,4 +1,10 @@
 # FlashlightRepos
+Final video submission URL: https://youtu.be/8UVXDF8A7WE<br/>
+*note: I did not indicate on Sakai but I submitted course evaluations in class.
+
+## How To
+This design is protable lightbox and pulse sensor. To turn the device on, toggle the switch ON. An initiation screen will appear and in a few seconds, the red LED will turn on. To cycle through various modes, simply push down on the pushbutton. On every fourth push of the cycle, the LCD will display the pulse readings. You can attach or detach the pulse sensor at any moment by attaching or removing the earclip to your earlobes.<br/>
+To replace the battery, simply open the box and unscrew the 1/8" bolts and expose the battery underneath. The battery cap is easily removable, and the battery replaceable.
 
 ## Features of the Device
 
@@ -20,39 +26,12 @@
 * LED display: "Haeryn's Light Box: Thank You Matt Brown!" logo and continous display of current BPM and max BPM
 * Indicates maximum BPM measured since device turned ON.
 
-#
-Functional Specifications:
-LED light that is button-activated to switch between the following operating modes:
-Off
-Brightest
-Intermediate Brightness
-Least Bright
-Flashing @ 2 Hz
-Self-contained device with LED and button exposed.
-Extra credit possibilities:
-Battery life indicator
-Waterproof enclosure
-#
-Constraints:
-Run on single battery up to 9 V
-Electronics connected to a single PCB (can be single- or double-sided)
-Cannot weight more than 1 lb
-Cannot have a single dimension > 6 in
-Cannot cost more than $50 to duplicate unit
-Battery must be easily replaceable
-#
-Evaluation Criteria:
-Minimize weight
-Minimize size
-Maximize Brightest mode
-Minimize power draw / maximize battery life
-Survive 3 foot drop with battery installed
-Create-and-maintain a GitHub project repository to maintain version history of:
-Mechanical CAD (PDFs + more)
-Electronic CAD (PDFs + more)
-Software
-Testing data
-Design history / notes
-Specification sheets
-Usage notes (README.md)
-Kanban board / Issues / Milestones
+### Extra specifications
+
+| Size(cm)        | 6x7x5  |
+|-----------------|--------|
+| Weight(g)       | 127.6g |
+| Power draw(mA)  | 65-70  |
+| Runtime ON(hr)  | 8.90   |
+| Runtime OFF(hr) | inf    |
+| Cost($)         | 35.15  |
